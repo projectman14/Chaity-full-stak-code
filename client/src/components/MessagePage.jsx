@@ -2,7 +2,7 @@ import React from 'react'
 
 const MessagePage = () => {
   return (
-    <div>MessagePage</div>
+    <div className='w-full bg-white h-full'>MessagePage</div>
   )
 }
 

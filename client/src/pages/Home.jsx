@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { setUser } from '../redux/userSlice'
+import { logout, setUser } from '../redux/userSlice'
 import Sidebar from '../components/Sidebar'
 import logo from '../../public/Logo.png'
 const Home = () => {
@@ -24,7 +24,7 @@ const Home = () => {
 
       dispatch(setUser(response.data.data))
 
-      if (response.data.logout) {
+      if (response.data.data.logout) {
         dispatch(logout())
         navigate('/email')
       }
@@ -51,11 +51,12 @@ const Home = () => {
         <Outlet />
       </section>
 
-      <div className='flex flex-col justify-center items-center w-[100%]'>
+      <div className={` flex-col justify-center items-center w-[100%] hidden ${!basePath ? 'hidden' : 'lg:flex'}`}>
         <div className='flex mb-8'>
           <img src={logo} className='h-[1.5rem] w-[1.5rem] ' />
-          <p className='text-white poppins-regular ml-3 text'>Chatify</p>
+          <p className='text-[#C8BCF6] poppins-regular ml-3 text-xl font-bold italic'>Chatify</p>
         </div>
+        <h3 className='poppins-regular-new text-base text-[#C8BCF6] -mt-5 font-semibold'>Select a user to send message</h3>
       </div>
 
     </div>

@@ -49,3 +49,7 @@
     font-style: normal;
     color: black;
 }
+
+.scrollbar::-webkit-scrollbar{
+    width: 10px;
+}
