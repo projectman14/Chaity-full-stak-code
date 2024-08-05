@@ -11,6 +11,7 @@ const UserSearchCard = ({ user , onClose }) => {
                     height={30}
                     name={user?.name}
                     imageUrl={user?.profile_pic}
+                    userId={user?._id}
                 />
             </div>
             <div className='flex flex-col'>

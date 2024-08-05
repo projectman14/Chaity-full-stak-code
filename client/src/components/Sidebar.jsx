@@ -9,9 +9,12 @@ import Avatar from './Avatar.jsx'
 import { useSelector } from 'react-redux'
 import UpdateUserDetails from './UpdateUserDetails.jsx'
 import SearchUser from './SearchUser.jsx'
+import { useNavigate } from 'react-router-dom'
 
 
 const Sidebar = () => {
+
+    const navigate = useNavigate()
 
     const user = useSelector(state => state?.user)
     const [updateUserOpen, setUpdateUserOpen] = useState(false)
@@ -30,11 +33,11 @@ const Sidebar = () => {
                 <img src={avatar} className='size-[3rem] mt-5' />
                 <div className='flex flex-col items-center justify-center'>
                     <img src={search_2} className='size-[1.75rem]  hover:opacity-70 cursor-pointer' onClick={() => setOpenSearchUser(true)} />
-                    <img src={Home} className='size-[3rem] mt-1 hover:opacity-70 cursor-pointer' />
+                    <img src={Home} className='size-[3rem] mt-1 hover:opacity-70 cursor-pointer' onClick={() => navigate('/') }/>
                     <img src={more} className='size-[3rem] -mt-0.5 hover:opacity-70 cursor-pointer' />
                 </div>
                 <div className='flex justify-center items-center flex-col '>
-                    <div className='ml-2 cursor-pointer' title={user?.name} onClick={() => setUpdateUserOpen(true)}><Avatar width={35} height={35} name={user?.name} imageUrl={user?.profile_pic} /></div>
+                    <div className='ml-2 cursor-pointer' title={user?.name} onClick={() => setUpdateUserOpen(true)}><Avatar width={35} height={35} name={user?.name} imageUrl={user?.profile_pic}/></div>
                     <img src={logout} className='size-[1.75rem] mt-4 mb-5 hover:opacity-70 cursor-pointer' />
                 </div>
             </div>
