@@ -19,14 +19,11 @@ const profileUrl = async (file) => {
     let url
 
     await promise.then(async function (response) {
-        // console.log(response); // Success
         const result = await storage.getFileView('66955854002584d3b293', response.$id);
         url = result.href;
         return result.href;
-
-        // console.log(result); // Resource URL
     }, function (error) {
-        console.log(error); // Failure
+        console.log(error); 
     });
 
     return url

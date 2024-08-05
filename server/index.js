@@ -4,9 +4,10 @@ import dotenv from 'dotenv'
 import { main } from './config/connectDB.js'
 import { router } from './routes/index.js'
 import cookieParser from 'cookie-parser'
+import {app , server} from './socket/index.js'
 dotenv.config()
 
-const app = express()
+// const app = express()
 app.use(cors({
     origin: process.env.FRONTEND_URL,
     credentials: true
@@ -23,7 +24,7 @@ app.get('/', (req, res) => {
 app.use('/api' , router)
 
 main().then(() => {
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
         console.log('server started at ' + PORT)
     })
 })
