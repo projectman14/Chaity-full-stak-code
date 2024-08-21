@@ -16,6 +16,11 @@ const messageSchema = new mongoose.Schema({
     seen: {
         type: Boolean,
         default: false
+    },
+    msgByUserId: {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: 'User'
     }
 
 }, {
@@ -33,7 +38,7 @@ const conversationSchema = new mongoose.Schema({
         require: true,
         ref: 'User'
     },
-    message: [{
+    messages: [{
         type: mongoose.Schema.ObjectId,
         ref: 'Message'
     }]
@@ -44,4 +49,4 @@ const conversationSchema = new mongoose.Schema({
 const MessageModel = mongoose.model('Message', messageSchema)
 const ConversationModel = mongoose.model('Conversation', conversationSchema)
 
-export {MessageModel , ConversationModel}
+export { MessageModel, ConversationModel }
