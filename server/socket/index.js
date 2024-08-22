@@ -8,13 +8,15 @@ import { getConversation } from '../helpers/getConversation.js'
 
 
 const app = express()
+const allowedOrigins = ['https://chatify-dusky-three.vercel.app'];
 
 //Socket Connetion
 
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: `*`,
+        origin: allowedOrigins,
+        methods: ["GET", "POST"],
         credentials: true
     }
 })
