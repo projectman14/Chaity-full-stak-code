@@ -2,8 +2,10 @@ const logout = async (req, res) => {
     try {
 
         const cookieOptions = {
-            http: true,
-            secure: true
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None',
+            maxAge: 24 * 60 * 60 * 1000
         }
 
         return res.cookie('token', "", cookieOptions).status(200).json({
