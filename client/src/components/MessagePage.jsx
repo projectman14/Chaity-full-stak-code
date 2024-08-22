@@ -131,6 +131,8 @@ const MessagePage = () => {
     if (socketConnection) {
       socketConnection.emit('message-page', params.userId)
 
+      socketConnection.emit('seen' , params.userId)
+
       socketConnection.on('message-user', (data) => {
         // console.log("USer Details", data)
         setDataUser(data)
@@ -200,13 +202,13 @@ const MessagePage = () => {
       </header>
 
       {/**show all messages here */}
-      <section className='h-[calc(100vh-8rem)] bg-black overflow-x-hidden overflow-y-scroll'>
+      <section className='h-[calc(100vh-8rem)] bg-[#100F0F]  overflow-x-hidden overflow-y-scroll'>
 
         <div className='flex flex-col gap-2 py-2 mx-2' ref={currentMessage}>
           {
             allMessage.map((msg, index) => {
               return (
-                <div className={` p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md ${user._id === msg?.msgByUserId ? "ml-auto bg-teal-100" : "bg-white"}`}>
+                <div className={` p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md ${user._id === msg?.msgByUserId ? "ml-auto bg-[#C8BCF6]" : "bg-[#E6E6FA]"}`}>
                   <div className='w-full relative'>
                     {
                       msg?.imageUrl && (

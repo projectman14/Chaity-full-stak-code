@@ -10,6 +10,8 @@ import UpdateUserDetails from './UpdateUserDetails.jsx'
 import SearchUser from './SearchUser.jsx'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import { FaImage } from "react-icons/fa6";
+import { FaVideo } from "react-icons/fa6";
 
 
 const Sidebar = () => {
@@ -31,9 +33,9 @@ const Sidebar = () => {
 
     useEffect(() => {
         if (socketConnection) {
-            const userId = user?._id?.toString()
-            console.log(typeof(userId))
-            // socketConnection.emit('sidebar', userId)
+            const userId = String(user?._id)
+            console.log(typeof (userId))
+            socketConnection.emit('sidebar', userId)
 
             socketConnection.on('conversation', (data) => {
                 console.log('conversation', data)
@@ -58,7 +60,7 @@ const Sidebar = () => {
                     }
                 })
 
-                setAllUser(conversationUserData)
+                setAllUserData(conversationUserData)
             })
         }
     }, [socketConnection, user])
@@ -97,10 +99,10 @@ const Sidebar = () => {
                         )
                     }
 
-                    {/* {
+                    {
                         allUserData.map((conv, index) => {
                             return (
-                                <NavLink to={"/" + conv?.userDetails?._id} key={conv?._id} className='flex items-center gap-2 py-3 px-2 border border-transparent hover:border-primary rounded hover:bg-slate-100 cursor-pointer'>
+                                <NavLink to={"/" + conv?.userDetails?._id} key={conv?._id} className='flex items-center gap-2 py-3 px-2 border border-transparent hover:border-[#C8BCF6] rounded hover:bg-[#181313cf] cursor-pointer'>
                                     <div>
                                         <Avatar
                                             imageUrl={conv?.userDetails?.profile_pic}
@@ -110,7 +112,7 @@ const Sidebar = () => {
                                         />
                                     </div>
                                     <div>
-                                        <h3 className='text-ellipsis line-clamp-1 font-semibold text-base'>{conv?.userDetails?.name}</h3>
+                                        <h3 className='text-ellipsis line-clamp-1 font-semibold text-base text-white'>{conv?.userDetails?.name}</h3>
                                         <div className='text-slate-500 text-xs flex items-center gap-1'>
                                             <div className='flex items-center gap-1'>
                                                 {
@@ -135,26 +137,28 @@ const Sidebar = () => {
                                     </div>
                                     {
                                         Boolean(conv?.unseenMsg) && (
-                                            <p className='text-xs w-6 h-6 flex justify-center items-center ml-auto p-1 bg-primary text-white font-semibold rounded-full'>{conv?.unseenMsg}</p>
+                                            <p className='text-xs w-6 h-6 flex justify-center items-center ml-auto p-1 bg-[#b6a9ea] text-black font-semibold rounded-full'>{conv?.unseenMsg}</p>
                                         )
                                     }
 
                                 </NavLink>
                             )
                         })
-                    } */}
+                    }
                 </div>
             </div>
 
 
             {updateUserOpen && (
                 // <h1 className='text-red-700'>Hello</h1>
-                <UpdateUserDetails onClose={() => setUpdateUserOpen(false)} prevUSerdata={user} />
+                <div className='z-50'>
+                    <UpdateUserDetails onClose={() => setUpdateUserOpen(false)} prevUSerdata={user} />
+                </div>
             )}
 
             {
                 openSearchUser && (
-                    <div className="top-0 left-0 right-0 bottom-0 fixed mx-auto  w-full bg-slate-700 bg-opacity-20">
+                    <div className="top-0 left-0 right-0 bottom-0 fixed mx-auto  w-full bg-slate-700 bg-opacity-20 z-50">
                         <SearchUser
                             placeholders={placeholders}
                             onClose={() => setOpenSearchUser(false)}

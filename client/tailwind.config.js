@@ -10,6 +10,8 @@ export default {
       'Switzer': ['Switzer', 'sans-serif'],
     }
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar'),
+  ],
 }
 
