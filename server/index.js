@@ -5,20 +5,16 @@ import { main } from './config/connectDB.js'
 import { router } from './routes/index.js'
 import cookieParser from 'cookie-parser'
 import { app, server } from './socket/index.js'
+
 dotenv.config()
 
-// const app = express()
-app.use(cors({
-    origin: 'https://chatify-dusky-three.vercel.app',
-    credentials: true
-}));
 app.use(express.json())
 app.use(cookieParser())
 
 const PORT = process.env.PORT || 8080;
 
 app.get('/', (req, res) => {
-    res.status(200).json({ type: 'sucess' })
+    res.status(200).json({ type: 'success' })
 })
 
 app.use('/api', router)
@@ -28,4 +24,3 @@ main().then(() => {
         console.log('server started at ' + PORT)
     })
 })
-

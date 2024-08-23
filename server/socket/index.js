@@ -1,16 +1,18 @@
 import express from 'express'
 import { Server } from 'socket.io'
 import { createServer } from 'http'
+import cors from 'cors'
 import { getUSerDetailsFromToken } from '../helpers/getUserDetailsFromToken.js'
 import { UserModel } from '../models/userModel.js'
 import { ConversationModel, MessageModel } from '../models/conversationModel.js'
 import { getConversation } from '../helpers/getConversation.js'
 
-
 const app = express()
-const allowedOrigins = ['https://chatify-dusky-three.vercel.app'];
 
-//Socket Connetion
+app.use(cors({
+    origin: 'https://chatify-dusky-three.vercel.app',
+    credentials: true
+}));
 
 const server = createServer(app)
 const io = new Server(server, {
@@ -18,23 +20,21 @@ const io = new Server(server, {
         origin: 'https://chatify-dusky-three.vercel.app',
         credentials: true,
         methods: ["GET", "POST"],
-      }
+    }
 })
 
 const onlineUser = new Set()
 
-
 io.on('connection', async (socket) => {
+    console.log('New connection attempt');
+    console.log('Origin:', socket.handshake.headers.origin);
+    console.log('Auth token:', socket.handshake.auth.token);
 
     console.log('connected user', socket.id)
 
     const token = socket.handshake.auth.token
 
-    // console.log(token)
-
     const user = await getUSerDetailsFromToken(token)
-
-    // console.log("user" , user)
 
     socket.join(user?._id?.toString())
     onlineUser.add(user?._id?.toString())
@@ -55,7 +55,6 @@ io.on('connection', async (socket) => {
 
         socket.emit('message-user', payload)
 
-        //get previous message
         const getConversationMessage = await ConversationModel.findOne({
             "$or": [
                 { sender: user?._id, receiver: userId },
@@ -67,7 +66,6 @@ io.on('connection', async (socket) => {
     })
 
     socket.on('new message', async (data) => {
-
         let conversation = await ConversationModel.findOne({
             "$or": [
                 { sender: data?.sender, receiver: data?.receiver },
@@ -81,7 +79,6 @@ io.on('connection', async (socket) => {
                 receiver: data?.receiver
             })
             conversation = await createConversation.save()
-
         }
 
         const message = new MessageModel({
@@ -92,7 +89,7 @@ io.on('connection', async (socket) => {
         })
         const saveMessage = await message.save()
 
-        const updateConversation = await ConversationModel.updateOne({ _id: conversation?._id }, {
+        await ConversationModel.updateOne({ _id: conversation?._id }, {
             "$push": { messages: saveMessage?._id }
         })
 
@@ -111,20 +108,15 @@ io.on('connection', async (socket) => {
 
         io.to(data?.sender).emit('conversation', conversationSender)
         io.to(data?.receiver).emit('conversation', conversationReceiver)
-
     })
 
     socket.on('sidebar', async (currentUserId) => {
         console.log("current user", currentUserId)
-
         const conversation = await getConversation(currentUserId)
-
         socket.emit('conversation', conversation)
-
     })
 
     socket.on('seen', async (msgByUserId) => {
-
         let conversation = await ConversationModel.findOne({
             "$or": [
                 { sender: user?._id, receiver: msgByUserId },
@@ -134,12 +126,11 @@ io.on('connection', async (socket) => {
 
         const conversationMessageId = conversation?.messages || []
 
-        const updateMessages = await MessageModel.updateMany(
+        await MessageModel.updateMany(
             { _id: { "$in": conversationMessageId }, msgByUserId: msgByUserId },
             { "$set": { seen: true } }
         )
 
-        //send conversation
         const conversationSender = await getConversation(user?._id?.toString())
         const conversationReceiver = await getConversation(msgByUserId)
 
