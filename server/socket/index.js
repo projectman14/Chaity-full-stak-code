@@ -15,11 +15,10 @@ const allowedOrigins = ['https://chatify-dusky-three.vercel.app'];
 const server = createServer(app)
 const io = new Server(server, {
     cors: {
-        origin: 'https://chatify-dusky-three.vercel.app', // Your frontend's URL
+        origin: 'https://chatify-dusky-three.vercel.app',
         credentials: true,
         methods: ["GET", "POST"],
-        // allowedHeaders: ["auth"]
-    }
+      }
 })
 
 const onlineUser = new Set()
