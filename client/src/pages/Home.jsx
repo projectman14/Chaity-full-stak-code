@@ -47,8 +47,7 @@ const Home = () => {
     const socketConnection = io(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}`, {
       auth: {
         token: localStorage.getItem('token')
-      },
-      withCredentials: true
+      }
     });
 
     socketConnection.on('onlineUser', (data) => {
