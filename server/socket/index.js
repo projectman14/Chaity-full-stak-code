@@ -16,10 +16,8 @@ const server = createServer(app)
 const io = new Server(server, {
     cors: {
         origin: 'https://chatify-dusky-three.vercel.app', // Your frontend's URL
-        methods: ['GET', 'POST'],
         credentials: true,
-    },
-    transports: ['websocket', 'polling'],
+    }
 })
 
 const onlineUser = new Set()
