@@ -44,7 +44,7 @@ const Home = () => {
   const basePath = location.pathname === '/'
 
   useEffect(() => {
-    const socketConnection = io(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}`, {
+    const socketConnection = io(`https://chaity-full-stak-code.vercel.app`, {
       auth: {
         token: localStorage.getItem('token')
       }
