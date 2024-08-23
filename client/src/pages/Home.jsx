@@ -49,7 +49,7 @@ const Home = () => {
         auth: {
           token: localStorage.getItem('token')
         },
-        transports: ['websocket', 'polling'], // Ensure WebSocket is the primary transport
+        transports: [ "websocket" ], // Ensure WebSocket is the primary transport
         withCredentials: true
       })
 
